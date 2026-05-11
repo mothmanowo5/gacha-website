@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>Gacha Ethics</title>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        #colorBox {
+            width: 200px;
+            height: 200px;
+            background-color: steelblue;
+            border-radius: 0.5rem;
+            border: 2px solid black;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-sm bg-dark navbar-dark justify-content-center">
+        <ul class="navbar-nav">
+            <li class="nav-item">
+                <a class="nav-link active" href="index.html">Main</a>
+            </li>
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">Stakeholders</a>
+                <ul class="dropdown-menu">
+                  <li><a class="dropdown-item" href="parents.html">Parents</a></li>
+                  <li><a class="dropdown-item" href="whales.html">Whales</a></li>
+                  <li><a class="dropdown-item" href="f2p.html">F2P</a></li>
+                  <li><a class="dropdown-item" href="developers.html">Developers</a></li>
+                </ul>
+              </li>
+            <li class="nav-item">
+                <a class="nav-link" href="options.html">Options</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="discussion.html">Discussion</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="games.html">Game recommendations</a>
+            </li>
+        </ul>
+    </nav>
+
+    <div class="container-fluid mt-4">
+        <main class="content">
+            <header><h1 class="text-center">WHAT IS GACHA?</h1></header>
+            <p>Gacha games are some of the most popular games today, especially among young and mobile gamers. Many of them have cult followings, and for good reason, as high quality free-to-download games are difficult to come across. However, there’s a darker side to these games: Exploitative, addictive mechanisms, competition that drives players into unhealthy habits, and a looming question of the ethics of this new form of gambling.</p>
+            <p>“Gacha” is a method of game monetization in which players spend in-game currency to gamble for characters, weapons, outfits, and more. It’s an increasingly popular model, as it brings in lots of revenue from dedicated players, while remaining free for anyone to play. That allows these games to have massive budgets, long storylines, and high quality production, as well as a large and varied fanbase and following.</p>
+            <p>They have also, however, been criticized for encouraging gambling addictions, financially exploiting players, and being unfair to players who don’t spend money.</p>
+            <p>So which is it? Evil manipulation tactic, or generous way to give high-quality games to the general public?</p>
+            <p>Well, both and neither. There is an inherent danger to games with a gambling mechanic, and there are currently no regulations like there are around traditional gambling, but they can be used safely, and some games more than others have safeguards in place to cut down on unhealthy spending practices. Gachas are popular for a reason.</p>
+            <h2>The Pity System</h2>
+            <p>To understand one of the common ways gachas differ from typical gambling, we need to understand <i>pity:</i> a system that guarantees the desired outcome of the gacha after a certain number of attempts, or “pulls.”</p>
+            <p>Let’s use the game Honkai: Star Rail as an example.</p>
+            <p>In HSR, characters are sorted into 5-star and 4-star rarities, with weapons (called Light Cones) ranging from 3- to 5-star rarity (5 being the rarest). When pulling on any banner, there is a 94.3% chance to obtain a random 3-star Light Cone, and a 5.1% chance to obtain a random 4-star entity (character or Light Cone). In addition, out of 4-star entities, there is a 50% chance it will be 1 of 3 “featured” 4-star characters. That leaves only a 0.6% chance of obtaining a 5-star entity, which sounds incredibly rare, but there’s a catch.</p>
+            <p>5-star entities are split into two categories: standard and limited. standard 5-star entities can be obtained at any time, but limited 5-star entities are only available for a few weeks at a time, on a rotating schedule. Each game version has 1-4 limited character banners, along with their corresponding Light Cone banners.</p>
+            <p>That leads to the meat of the pity system: HSR guarantees at least 1 4-star entity is obtained within every 10 pulls, and a 5-star entity is obtained within every 100 pulls. This 5-star entity has a 50% chance to be the limited character or Light Cone, and a 50% chance to be a random standard entity.</p>
+            <p>That might seem confusing, so let’s play around with it. Say this is a game where you fight with colors. The colors of the rainbow are 4-stars, and more specific colors are 5-stars. There is 1 standard 5-star, Periwinkle, and we’re pulling on the banner for the current limited 5-star, Mauve. In this game a 5-star is guaranteed every 10 pulls. Otherwise, the probability of obtaining a 5-star is 5%. For simplicity’s sake, every other possibility is a 4-star. How long does it take you to get Mauve? How do you feel when you do?</p>
+        </main>
+    </div>
+    <div class="container-fluid position-relative">
+        <div class="d-flex flex-column align-items-center justify-content-center h-100">
+            <div id="colorBox"></div>
+            <p id="caption"></p>
+            <button
+                class="btn btn-primary mt-2"
+                id="pullBtn"
+                >
+                Pull!</button>
+        </div>
+        <div class="position-absolute top-50 end-0 translate-middle-y me-5">
+            <p><i>Pulls since 5-star:</i></p>
+            <p id="pulls">0</p>
+            <p><i>Lost 50/50:</i></p>
+            <p id="lost">false</p>
+        </div>
+    </div>
+    <div class="container-fluid pb-5"></div>
+    <div class="container-fluid pb-5"></div>
+
+    <script>
+        const button = document.getElementById("pullBtn");
+        const box = document.getElementById("colorBox");
+        const pityDisplay = document.getElementById("pulls");
+        const lost = document.getElementById("lost");
+        const caption = document.getElementById("caption");
+
+        const colors = [
+            [255, 0, 0], //red, 0
+            [255, 165, 0], //orange, 1
+            [255, 255, 0], //yellow, 2
+            [0, 138, 0], //green, 3
+            [0, 0, 255], //blue, 4
+            [160, 32, 240], //purple, 5
+            [255, 105, 180], //pink, 6
+            [0, 0, 0], //black, 7
+            [180, 180, 180], //gray, 8
+            [124, 131, 188], //periwinkle, 9
+            [135, 76, 98], //mauve, 10
+        ];
+
+        function setColor(index){
+            const color = colors[index]
+            box.style.backgroundColor = `rgb(${color[0]}, ${color[1]}, ${color[2]})`;
+            if(index === 0){
+                caption.innerText = "4 star: Red"
+            }
+            if(index === 1){
+                caption.innerText = "4 star: Orange"
+            }
+            if(index === 2){
+                caption.innerText = "4 star: Yellow"
+            }
+            if(index === 3){
+                caption.innerText = "4 star: Green"
+            }
+            if(index === 4){
+                caption.innerText = "4 star: Blue"
+            }
+            if(index === 5){
+                caption.innerText = "4 star: Purple"
+            }
+            if(index === 6){
+                caption.innerText = "4 star: Pink"
+            }
+            if(index === 7){
+                caption.innerText = "4 star: Black"
+            }
+            if(index === 8){
+                caption.innerText = "4 star: Gray"
+            }
+            if(index === 9){
+                caption.innerText = "Standard 5 star: Periwinkle"
+            }
+            if(index === 10){
+                caption.innerText = "Limited 5 star: Mauve"
+            }
+        }
+
+        button.addEventListener("click", function (){
+            let pity = parseInt(pityDisplay.innerText);
+            let lostBool = lost.innerText === "true";
+
+            //if at pity
+            if(pity >= 9){
+                if(lostBool){
+                    setColor(10);
+                    lost.innerText = "false";
+                    pityDisplay.innerText = "0";
+                }
+                else{
+                    if(Math.floor(Math.random() * 2) === 1){
+                    setColor(10);
+                    pityDisplay.innerText = "0";
+                    lost.innerText="false";
+                    }
+                    else{
+                        setColor(9);
+                        lost.innerText = "true";
+                        pityDisplay.innerText = "0";
+                    }
+                }
+            }
+            else{ //not at pity
+                let rarity = Math.floor(Math.random()*20);
+                if(rarity === 5){ //5star obtained 
+                    if(Math.floor(Math.random() * 2) === 1){
+                    setColor(10)
+                    pityDisplay.innerText = "0";
+                    lost.innerText="false"
+                    }
+                    else{
+                    setColor(9)
+                    lost.innerText = "true";
+                    pityDisplay.innerText = "0";
+                    }
+                }
+                else{
+                    let color = Math.floor(Math.random()*9);
+                    setColor(color);
+                    pity +=1;
+                    pityDisplay.innerText = pity;
+
+                }
+            }
+        })
+    </script>
+</body>
+<footer class="bg-dark text-white fixed-bottom py-3">
+    <div class="container-fluid">
+      <div class="d-flex justify-content-between">
+        <button class="btn btn-outline-light" disabled>
+          Previous
+        </button>
+        <button class="btn btn-outline-light" onclick="window.location.href='parents.html'">
+          Next
+        </button>
+      </div>
+    </div>
+  </footer>
+
+</html>
