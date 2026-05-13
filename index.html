@@ -56,26 +56,24 @@
             <p>To understand one of the common ways gachas differ from typical gambling, we need to understand <i>pity:</i> a system that guarantees the desired outcome of the gacha after a certain number of attempts, or “pulls.”</p>
             <p>Let’s use the game Honkai: Star Rail as an example.</p>
             <p>In HSR, characters are sorted into 5-star and 4-star rarities, with weapons (called Light Cones) ranging from 3- to 5-star rarity (5 being the rarest). When pulling on any banner, there is a 94.3% chance to obtain a random 3-star Light Cone, and a 5.1% chance to obtain a random 4-star entity (character or Light Cone). In addition, out of 4-star entities, there is a 50% chance it will be 1 of 3 “featured” 4-star characters. That leaves only a 0.6% chance of obtaining a 5-star entity, which sounds incredibly rare, but there’s a catch.</p>
-            <p>5-star entities are split into two categories: standard and limited. standard 5-star entities can be obtained at any time, but limited 5-star entities are only available for a few weeks at a time, on a rotating schedule. Each game version has 1-4 limited character banners, along with their corresponding Light Cone banners.</p>
+            <p>5-star entities are split into two categories: standard and limited. Standard 5-star entities can be obtained at any time, but limited 5-star entities are only available for a few weeks at a time, on a rotating schedule. Each game version has 1 to 4 limited character banners, along with their corresponding Light Cone banners.</p>
             <p>That leads to the meat of the pity system: HSR guarantees at least 1 4-star entity is obtained within every 10 pulls, and a 5-star entity is obtained within every 100 pulls. This 5-star entity has a 50% chance to be the limited character or Light Cone, and a 50% chance to be a random standard entity.</p>
             <p>That might seem confusing, so let’s play around with it. Say this is a game where you fight with colors. The colors of the rainbow are 4-stars, and more specific colors are 5-stars. There is 1 standard 5-star, Periwinkle, and we’re pulling on the banner for the current limited 5-star, Mauve. In this game a 5-star is guaranteed every 10 pulls. Otherwise, the probability of obtaining a 5-star is 5%. For simplicity’s sake, every other possibility is a 4-star. How long does it take you to get Mauve? How do you feel when you do?</p>
         </main>
     </div>
     <div class="container-fluid position-relative">
+        <div class="position-absolute top-50 end-0 translate-middle-y me-5">
+            <p id="pulls" aria-live = "polite"><i>Pulls since 5-star: 0</i></p>
+            <p id="lost" aria-live = "polite"><i>Lost 50/50: false</i></p>
+        </div>
         <div class="d-flex flex-column align-items-center justify-content-center h-100">
             <div id="colorBox"></div>
-            <p id="caption"></p>
+            <p id="caption" aria-live = "polite"></p>
             <button
                 class="btn btn-primary mt-2"
                 id="pullBtn"
                 >
                 Pull!</button>
-        </div>
-        <div class="position-absolute top-50 end-0 translate-middle-y me-5">
-            <p><i>Pulls since 5-star:</i></p>
-            <p id="pulls">0</p>
-            <p><i>Lost 50/50:</i></p>
-            <p id="lost">false</p>
         </div>
     </div>
     <div class="container-fluid pb-5"></div>
@@ -141,26 +139,27 @@
         }
 
         button.addEventListener("click", function (){
-            let pity = parseInt(pityDisplay.innerText);
-            let lostBool = lost.innerText === "true";
+            let pityText = pityDisplay.innerText
+            let pity = parseInt(pityText.replace("Pulls since 5-star: ", ""));
+            let lostBool = lost.innerText === "Lost 50/50: true";
 
             //if at pity
             if(pity >= 9){
                 if(lostBool){
                     setColor(10);
-                    lost.innerText = "false";
-                    pityDisplay.innerText = "0";
+                    lost.innerText = "Lost 50/50: false";
+                    pityDisplay.innerText = "Pulls since 5-star: 0";
                 }
                 else{
                     if(Math.floor(Math.random() * 2) === 1){
                     setColor(10);
-                    pityDisplay.innerText = "0";
-                    lost.innerText="false";
+                    pityDisplay.innerText = "Pulls since 5-star: 0";
+                    lost.innerText="Lost 50/50: false";
                     }
                     else{
                         setColor(9);
-                        lost.innerText = "true";
-                        pityDisplay.innerText = "0";
+                        lost.innerText = "Lost 50/50: true";
+                        pityDisplay.innerText = "Pulls since 5-star: 0";
                     }
                 }
             }
@@ -169,20 +168,20 @@
                 if(rarity === 5){ //5star obtained 
                     if(Math.floor(Math.random() * 2) === 1){
                     setColor(10)
-                    pityDisplay.innerText = "0";
-                    lost.innerText="false"
+                    pityDisplay.innerText = "Pulls since 5-star: 0";
+                    lost.innerText="Lost 50/50: false"
                     }
                     else{
                     setColor(9)
-                    lost.innerText = "true";
-                    pityDisplay.innerText = "0";
+                    lost.innerText = "Lost 50/50: true";
+                    pityDisplay.innerText = "Pulls since 5-star: 0";
                     }
                 }
                 else{
                     let color = Math.floor(Math.random()*9);
                     setColor(color);
                     pity +=1;
-                    pityDisplay.innerText = pity;
+                    pityDisplay.innerText = ("Pulls since 5-star: " + pity);
 
                 }
             }
